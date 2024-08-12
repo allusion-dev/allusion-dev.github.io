@@ -6,16 +6,17 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    overflow: hidden; /* Prevent scrollbars */
 }
 
-a {
-    color: #f1f1f1;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-a:hover {
-    color: #00bcd4;
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Ensure canvas is behind all other elements */
+    pointer-events: none; /* Prevent canvas from interfering with mouse events */
 }
 
 /* Navigation */
@@ -32,6 +33,7 @@ nav ul {
     padding: 0;
     display: flex;
     justify-content: center;
+    margin: 0;
 }
 
 nav ul li {
@@ -42,17 +44,22 @@ nav ul li a {
     font-size: 16px;
     padding: 10px 15px;
     display: inline-block;
-    transition: background 0.3s;
+    color: #f1f1f1;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
 }
 
 nav ul li a:hover {
     background-color: #333;
     border-radius: 5px;
+    color: #00bcd4;
 }
 
 /* Main Content */
 main {
     padding: 20px;
+    position: relative; /* Ensure main content is positioned above the canvas */
+    z-index: 1;
 }
 
 section {
@@ -80,4 +87,5 @@ footer {
     border-top: 2px solid transparent;
     border-image: linear-gradient(45deg, #00bcd4, #ff4081);
     border-image-slice: 1;
+    z-index: 1; /* Ensure footer is above the canvas */
 }
