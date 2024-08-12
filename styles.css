@@ -18,25 +18,6 @@ a:hover {
     color: #00bcd4;
 }
 
-/* Header */
-header {
-    background: linear-gradient(45deg, #111, #222); /* Darker gradient */
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-    border-bottom: 3px solid transparent;
-    border-image: linear-gradient(45deg, #00bcd4, #ff4081);
-    border-image-slice: 1;
-}
-
-header h1 {
-    background-color: #000; /* Darker background for the header text */
-    padding: 10px;
-    border-radius: 5px;
-    display: inline-block;
-    margin: 0;
-}
-
 /* Navigation */
 nav {
     background-color: #1f1f1f;
