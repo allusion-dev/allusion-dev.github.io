@@ -1,4 +1,5 @@
 // Firework Animation
+
 const canvas = document.getElementById('fireworkCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -14,26 +15,26 @@ const fireworks = [];
 const particles = [];
 
 class Firework {
-    constructor(x, y, targetX, targetY) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.targetX = targetX;
-        this.targetY = targetY;
-        this.distanceToTarget = this.calculateDistance(x, y, targetX, targetY);
+        this.targetX = Math.random() * canvas.width;
+        this.targetY = Math.random() * canvas.height;
+        this.distanceToTarget = this.calculateDistance(this.x, this.y, this.targetX, this.targetY);
         this.distanceTraveled = 0;
         this.coordinates = [];
         this.coordinateCount = 3;
         while (this.coordinateCount--) {
             this.coordinates.push([this.x, this.y]);
         }
-        this.angle = Math.atan2(targetY - y, targetX - x);
+        this.angle = Math.atan2(this.targetY - this.y, this.targetX - this.x);
         this.speed = 2;
         this.acceleration = 1.05;
         this.brightness = Math.random() * 60 + 40;
         this.targetRadius = 1;
     }
 
-    update(index) {
+    update() {
         this.coordinates.pop();
         this.coordinates.unshift([this.x, this.y]);
 
@@ -55,8 +56,8 @@ class Firework {
         );
 
         if (this.distanceTraveled >= this.distanceToTarget) {
-            createParticles(this.targetX, this.targetY);
-            fireworks.splice(index, 1);
+            this.createParticles();
+            this.reset();
         } else {
             this.x += vx;
             this.y += vy;
@@ -73,6 +74,26 @@ class Firework {
         ctx.beginPath();
         ctx.arc(this.targetX, this.targetY, this.targetRadius, 0, Math.PI * 2);
         ctx.stroke();
+    }
+
+    createParticles() {
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle(this.targetX, this.targetY));
+        }
+    }
+
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.targetX = Math.random() * canvas.width;
+        this.targetY = Math.random() * canvas.height;
+        this.distanceToTarget = this.calculateDistance(this.x, this.y, this.targetX, this.targetY);
+        this.distanceTraveled = 0;
+        this.coordinates = [];
+        this.coordinateCount = 3;
+        while (this.coordinateCount--) {
+            this.coordinates.push([this.x, this.y]);
+        }
     }
 
     calculateDistance(x1, y1, x2, y2) {
@@ -101,7 +122,7 @@ class Particle {
         this.decay = Math.random() * 0.03 + 0.01;
     }
 
-    update(index) {
+    update() {
         this.coordinates.pop();
         this.coordinates.unshift([this.x, this.y]);
         this.speed *= this.friction;
@@ -110,7 +131,7 @@ class Particle {
         this.alpha -= this.decay;
 
         if (this.alpha <= this.decay) {
-            particles.splice(index, 1);
+            particles.splice(particles.indexOf(this), 1);
         }
     }
 
@@ -118,4 +139,35 @@ class Particle {
         ctx.beginPath();
         ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
         ctx.lineTo(this.x, this.y);
-        ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%,
+        ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
+        ctx.stroke();
+    }
+}
+
+// Create fireworks at regular intervals
+function createFireworks() {
+    setInterval(() => {
+        fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
+    }, 1000);
+}
+
+// Animation loop
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < fireworks.length; i++) {
+        fireworks[i].update();
+        fireworks[i].draw();
+    }
+
+    for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+    }
+
+    requestAnimationFrame(animate);
+}
+
+// Start the animation
+createFireworks();
+animate();
