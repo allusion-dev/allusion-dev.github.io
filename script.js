@@ -145,7 +145,7 @@ class Particle {
 // Create fireworks at regular intervals
 let fireworkInterval = setInterval(() => {
     fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
-}, 4000);
+}, 10000);
 
 // Stop creating new fireworks after 7 seconds
 let stopAnimation = false;
