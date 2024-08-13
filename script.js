@@ -144,19 +144,14 @@ class Particle {
     }
 }
 
-// Create fireworks at regular intervals for the first 7 seconds
-let animationActive = true;
-function createFireworks() {
-    setInterval(() => {
-        if (animationActive) {
-            fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
-        }
-    }, 2000);
-}
+// Create fireworks at regular intervals
+let fireworkInterval = setInterval(() => {
+    fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
+}, 2000);
 
-// Stop animation after 7 seconds
+// Stop creating new fireworks after 7 seconds
 setTimeout(() => {
-    animationActive = false;
+    clearInterval(fireworkInterval);
 }, 7000);
 
 // Animation loop
@@ -177,5 +172,4 @@ function animate() {
 }
 
 // Start the animation
-createFireworks();
 animate();
