@@ -1,5 +1,6 @@
 const canvas = document.getElementById('fireworkCanvas');
 const ctx = canvas.getContext('2d');
+const toggleButton = document.getElementById('toggleFireworks');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -11,6 +12,9 @@ window.addEventListener('resize', () => {
 
 const fireworks = [];
 const particles = [];
+let fireworkInterval;
+let isAnimationRunning = false;
+let stopAnimation = false;
 
 class Firework {
     constructor(x, y) {
@@ -142,19 +146,38 @@ class Particle {
     }
 }
 
-// Create fireworks at regular intervals
-let fireworkInterval = setInterval(() => {
-    fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
-}, 2000);
+function startFireworks() {
+    if (!isAnimationRunning) {
+        isAnimationRunning = true;
+        stopAnimation = false;
+        fireworkInterval = setInterval(() => {
+            fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
+        }, 2000);
 
-// Stop creating new fireworks after 7 seconds
-let stopAnimation = false;
-setTimeout(() => {
+        setTimeout(() => {
+            clearInterval(fireworkInterval);
+            stopAnimation = true;
+            isAnimationRunning = false;
+        }, 7000);
+
+        animate();
+    }
+}
+
+function stopFireworks() {
     clearInterval(fireworkInterval);
     stopAnimation = true;
-}, 7000);
+    isAnimationRunning = false;
+}
 
-// Animation loop
+toggleButton.addEventListener('click', () => {
+    if (isAnimationRunning) {
+        stopFireworks();
+    } else {
+        startFireworks();
+    }
+});
+
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -173,5 +196,5 @@ function animate() {
     }
 }
 
-// Start the animation
-animate();
+// Start the animation initially
+startFireworks();
