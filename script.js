@@ -77,7 +77,6 @@ class Firework {
     }
 
     createParticles() {
-        // Reduce the number of particles from 100 to 50
         for (let i = 0; i < 50; i++) {
             particles.push(new Particle(this.targetX, this.targetY));
         }
@@ -114,7 +113,7 @@ class Particle {
             this.coordinates.push([this.x, this.y]);
         }
         this.angle = Math.random() * Math.PI * 2;
-        this.speed = Math.random() * 6 + 1; // Reduced max speed from 10 to 6
+        this.speed = Math.random() * 6 + 1;
         this.friction = 0.95;
         this.gravity = 1;
         this.hue = Math.random() * 360;
@@ -145,13 +144,20 @@ class Particle {
     }
 }
 
-// Create fireworks at less frequent intervals
+// Create fireworks at regular intervals for the first 7 seconds
+let animationActive = true;
 function createFireworks() {
-    // Reduced frequency of firework creation
     setInterval(() => {
-        fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
-    }, 2000); // Increased interval from 1000ms to 2000ms
+        if (animationActive) {
+            fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
+        }
+    }, 2000);
 }
+
+// Stop animation after 7 seconds
+setTimeout(() => {
+    animationActive = false;
+}, 7000);
 
 // Animation loop
 function animate() {
