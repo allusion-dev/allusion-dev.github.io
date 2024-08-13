@@ -158,7 +158,7 @@ function startFireworks() {
             clearInterval(fireworkInterval);
             stopAnimation = true;
             isAnimationRunning = false;
-        }, 7000);
+        }, 4000);
 
         animate();
     }
