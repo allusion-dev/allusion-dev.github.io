@@ -11,7 +11,6 @@ window.addEventListener('resize', () => {
 
 const fireworks = [];
 const particles = [];
-let stopAnimation = false;
 
 class Firework {
     constructor(x, y) {
@@ -143,14 +142,13 @@ class Particle {
     }
 }
 
-// Create fireworks at regular intervals for 7 seconds
+// Create fireworks at regular intervals
 let fireworkInterval = setInterval(() => {
-    if (!stopAnimation) {
-        fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
-    }
-}, 1000);
+    fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height));
+}, 2000);
 
 // Stop creating new fireworks after 7 seconds
+let stopAnimation = false;
 setTimeout(() => {
     clearInterval(fireworkInterval);
     stopAnimation = true;
@@ -170,8 +168,7 @@ function animate() {
         particles[i].draw();
     }
 
-    // Continue animation only if there are fireworks or particles left
-    if (fireworks.length > 0 || particles.length > 0) {
+    if (!stopAnimation || fireworks.length > 0 || particles.length > 0) {
         requestAnimationFrame(animate);
     }
 }
