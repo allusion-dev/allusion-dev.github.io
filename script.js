@@ -152,7 +152,7 @@ let stopAnimation = false;
 setTimeout(() => {
     clearInterval(fireworkInterval);
     stopAnimation = true;
-}, 7000);
+}, 4000);
 
 // Animation loop
 function animate() {
