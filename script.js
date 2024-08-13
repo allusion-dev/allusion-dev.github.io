@@ -1,5 +1,3 @@
-// Firework Animation
-
 const canvas = document.getElementById('fireworkCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -150,8 +148,10 @@ let fireworkInterval = setInterval(() => {
 }, 2000);
 
 // Stop creating new fireworks after 7 seconds
+let stopAnimation = false;
 setTimeout(() => {
     clearInterval(fireworkInterval);
+    stopAnimation = true;
 }, 7000);
 
 // Animation loop
@@ -168,7 +168,9 @@ function animate() {
         particles[i].draw();
     }
 
-    requestAnimationFrame(animate);
+    if (!stopAnimation || fireworks.length > 0 || particles.length > 0) {
+        requestAnimationFrame(animate);
+    }
 }
 
 // Start the animation
