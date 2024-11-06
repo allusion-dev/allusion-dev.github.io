@@ -1,2 +1,2 @@
 # allusion-dev.github.io
-website
+website: https://allusion.space
